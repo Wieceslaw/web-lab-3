@@ -1,43 +1,26 @@
 package ru.ifmo.se.lab3.beans;
 
+import lombok.*;
+import ru.ifmo.se.lab3.model.Repository;
+import ru.ifmo.se.lab3.services.CheckService;
+
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 
 @ManagedBean(name="areaCheck")
 @SessionScoped
+@Getter
+@Setter
+@NoArgsConstructor
 public class AreaCheckBean implements Serializable {
     // datetime delay x y r result
+    @ManagedProperty(value = "#{repository}")
+    private Repository repository;
     private Double x;
     private Double y;
     private Double r;
-
-    public AreaCheckBean() {
-    }
-
-    public Double getX() {
-        return x;
-    }
-
-    public void setX(Double x) {
-        this.x = x;
-    }
-
-    public Double getY() {
-        return y;
-    }
-
-    public void setY(Double y) {
-        this.y = y;
-    }
-
-    public Double getR() {
-        return r;
-    }
-
-    public void setR(Double r) {
-        this.r = r;
-    }
 
     public void makeHit() {
         // start timer
@@ -45,17 +28,6 @@ public class AreaCheckBean implements Serializable {
         // check if hit
         // stop timer & create point object
         // save point object to repository
-    }
-
-    public boolean check(double x, double y, double r) {
-        if (x > 0 && y > 0) {
-            return Math.sqrt((x * x) + (y * y)) <= r;
-        } else if (x <= 0 && y >= 0) {
-            return x >= -r / 2 && y <= r;
-        } else if (x <= 0 && y <= 0) {
-            return y >= -2 * x - r;
-        } else {
-            return false;
-        }
+        boolean hit = CheckService.check(x, y, r);
     }
 }

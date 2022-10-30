@@ -1,9 +1,15 @@
 package ru.ifmo.se.lab3.model;
 
-import ru.ifmo.se.lab3.model.models.Hit;
+import ru.ifmo.se.lab3.entities.Result;
+
+import javax.persistence.EntityManager;
+import java.util.List;
 
 public interface Repository {
-    void save(Hit hit);
-    void clear();
-    void getAll();
+    Result createWithTransaction(Result result);
+    List<Result> readAllWithTransaction();
+    int deleteAllWithTransaction();
+    Result createWithOutTransaction(EntityManager entityManager, Result result);
+    List<Result> readAllWithOutTransaction(EntityManager entityManager);
+    int deleteAllWithOutTransaction(EntityManager entityManager);
 }

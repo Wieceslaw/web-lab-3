@@ -3,7 +3,15 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
-    <persistence-unit name="default">
-
+    <persistence-unit name="lab3" transaction-type="JTA">
+        <jta-data-source>java:jboss/lab3</jta-data-source>
+<!--        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
+        <class>ru.ifmo.se.lab3.entities.Result</class>
+        <properties>
+            <property name="eclipselink.logging.level" value="FINEST" />
+            <property name="eclipselink.logging.level.sql" value="FINEST" />
+            <property name="eclipselink.target-server" value="JBoss"/>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+        </properties>
     </persistence-unit>
 </persistence>
