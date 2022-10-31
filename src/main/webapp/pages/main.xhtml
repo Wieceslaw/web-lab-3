@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html   lang="en"
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:p="http://primefaces.org/ui"
-        xmlns:h="http://xmlns.jcp.org/jsf/html"
-        xmlns:f="http://xmlns.jcp.org/jsf/core"
->
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <f:view>
     <h:head>
         <meta charset="UTF-8"/>
@@ -30,76 +30,24 @@
             <div class="container">
                 <div class="panel">
                     <div class="graph">
-                        <svg viewBox="0 0 300 300" class="graph-image" xmlns="http://www.w3.org/2000/svg">
-                            <!-- polygons -->
-
-                            <path d="
-                                  M 250 150
-                                  A 100 100, 0, 0, 0, 150 50
-                                  L 150 150
-                              "
-                                fill="red"></path>
-
-                            <polygon points="
-                                150, 150
-                                150, 50,
-                                100, 50,
-                                100, 150
-                                "
-                                     fill="red"></polygon>
-
-                            <polygon points="
-                                150, 150
-                                150, 250
-                                100, 150
-                                "
-                                     fill="red"></polygon>
-
-                            <!-- axles -->
-                            <text class="graph-axle-text" x="285" y="140">x</text>
-                            <line class="graph-axle-line" x1="0" x2="295" y1="150" y2="150"></line>
-                            <polygon class="graph-axle-arrow" points="299,150 290,155 290,145"></polygon>
-
-                            <text class="graph-axle-text" x="160" y="15">y</text>
-                            <line class="graph-axle-line" x1="150" x2="150" y1="5" y2="300"></line>
-                            <polygon class="graph-axle-arrow" points="150,1 145,10 155,10"></polygon>
-
-                            <!-- points -->
-                            <line class="graph-point" x1="50" x2="50" y1="145" y2="155"></line>
-                            <line class="graph-point" x1="100" x2="100" y1="145" y2="155"></line>
-                            <line class="graph-point" x1="200" x2="200" y1="145" y2="155"></line>
-                            <line class="graph-point" x1="250" x2="250" y1="145" y2="155"></line>
-
-                            <line class="graph-point" x1="145" x2="155" y1="250" y2="250"></line>
-                            <line class="graph-point" x1="145" x2="155" y1="200" y2="200"></line>
-                            <line class="graph-point" x1="145" x2="155" y1="100" y2="100"></line>
-                            <line class="graph-point" x1="145" x2="155" y1="50" y2="50"></line>
-
-                            <!-- labels -->
-                            <text class="graph-label r-whole-neg" text-anchor="middle" x="50" y="140">-R</text>
-                            <text class="graph-label r-half-neg" text-anchor="middle" x="100" y="140">-R/2</text>
-                            <text class="graph-label r-half-pos" text-anchor="middle" x="200" y="140">R/2</text>
-                            <text class="graph-label r-whole-pos" text-anchor="middle" x="250" y="140">R</text>
-
-                            <text class="graph-label r-whole-neg" text-anchor="start" x="160" y="255">-R</text>
-                            <text class="graph-label r-half-neg" text-anchor="start" x="160" y="205">-R/2</text>
-                            <text class="graph-label r-half-pos" text-anchor="start" x="160" y="105">R/2</text>
-                            <text class="graph-label r-whole-pos" text-anchor="start" x="160" y="55">R</text>
-
-                            <!-- dashes -->
-                            <line class="graph-axle-line graph-x-dash-line" stroke-dasharray="5,5" x1="-10" x2="-10" y1="0" y2="300"></line>
-                            <line class="graph-axle-line graph-y-dash-line" stroke-dasharray="5,5" x1="0" x2="300" y1="-10" y2="-10"></line>
-                            <!--   TODO: Add points here -->
-                            <circle cx="1" cy="1" r="2"></circle>
-                        </svg>
+                        <h:panelGroup id="graph-image">
+                            <ui:include src="graph.xhtml" />
+                            <h:form id="graph-hidden-form">
+                                <h:inputHidden id="x-hidden-value" value="#{areaCheck.x}" />
+                                <h:inputHidden id="y-hidden-value" value="#{areaCheck.y}" />
+                                <h:inputHidden id="r-hidden-value" value="#{areaCheck.r}" />
+                                <h:commandButton type="submit" id="hidden-button" style="display: none" action="#{areaCheck.hit()}" >
+                                    <f:ajax render="data-table r-error graph-image" event="click" execute="@form" onevent="redrawGraphLabels"/>
+                                </h:commandButton>
+                            </h:form>
+                        </h:panelGroup>
                     </div>
                     <h:form action="change me" method="get" id="graphForm">
-
-<!--                    TODO: x value input: p:selectOneRadio (-4:4:1) -->
                         <div>
                             <p:outputLabel for="xCord" value="X" />
                             <p:selectOneRadio value="#{areaCheck.x}" id="xCord">
                                 <f:validator validatorId="xCordValidator"/>
+                                <f:ajax event="change" render="x-error" execute="@this" />
                                 <f:selectItem itemValue="-4" itemLabel="-4" />
                                 <f:selectItem itemValue="-3" itemLabel="-3" />
                                 <f:selectItem itemValue="-2" itemLabel="-2" />
@@ -110,81 +58,59 @@
                                 <f:selectItem itemValue="3" itemLabel="3" />
                                 <f:selectItem itemValue="4" itemLabel="4" />
                             </p:selectOneRadio>
-                            <p:message for="xCord"/>
+                            <p:message id="x-error" for="xCord"/>
                         </div>
-
-<!--                        TODO: y value input: inputText (-3...5) -->
                         <div>
                             <p:outputLabel for="yCord" value="Y" />
-                            <p:inputText value="#{areaCheck.y}" id="yCord" placeholder="(-3...5)" maxlength="6" autocomplete="off">
-                                <f:validateDoubleRange minimum="-3.0" maximum="5.0" for="yCord"/>
+                            <p:inputText value="#{areaCheck.y}" id="yCord" converterMessage="Y must be a number" placeholder="(-3...5)" maxlength="6" autocomplete="off" required="true" requiredMessage="Y can not be empty" validatorMessage="Y must be between -3 and 5">
+                                <f:validateDoubleRange minimum="-3.0" maximum="5.0" for="yCord" />
                                 <f:validator validatorId="yCordValidator"/>
+                                <f:ajax event="keyup" render="y-error" execute="@this" />
                             </p:inputText>
-                            <p:message for="yCord" />
+                            <p:message id="y-error" for="yCord" />
                         </div>
-
-<!--                        TODO: r value input: p:slider (1:4:0.25) -->
                         <div>
                             <p:outputLabel for="rValue">R</p:outputLabel>
-                            <h:outputText id="rOutput" value="#{areaCheck.r}"/>
+                            <h:outputText id="rOutput" value="#{areaCheck.r}" />
                             <h:inputHidden id="rValue" value="#{areaCheck.r}">
                                 <f:validator validatorId="rValueValidator"/>
                             </h:inputHidden>
-                            <p:slider for="rValue" minValue="1" maxValue="4" step="0.25" display="rOutput"/>
-                            <p:message for="rValue" />
+                            <p:slider for="rValue" minValue="1" maxValue="4" step="0.25" display="rOutput" onSlide="changeGraphLabels(event, ui)" />
+                            <p:message id="r-error" for="rValue" />
                         </div>
-<!--                        TODO: submit and clear buttons: h:commandButton -->
-                        <h:commandButton value="Save!" validateClient="true" />
-                        <!--                        <p>-->
-<!--                            <input type="submit" value="DAVAI" class="submit-button form-input" />-->
-<!--                            <input type="button" value="CLEAR" class="clear-button form-input" />-->
-<!--                        </p>-->
+                        <h:commandButton type="submit" value="Hit" validateClient="true" action="#{areaCheck.hit()}">
+                            <f:ajax render="data-table x-error r-error y-error graph-image" event="click" execute="@form" />
+                        </h:commandButton>
+                    </h:form>
+                    <h:form>
+                        <h:commandButton value="Clear" action="#{history.clear()}" />
                     </h:form>
                 </div>
-<!--                <h:form>-->
-<!--                    <h:outputLabel value="Hello value here:" for="hello" />-->
-<!--                    <h:inputText id="hello" value="#{hello.name}" required="true" />-->
-<!--                    <h:message for="hello" />-->
-<!--                    <h:commandButton action="button" value="Save!" />-->
-<!--                </h:form>-->
-                <br/>
-                <span>X Value: ${areaCheck.x}</span><br/>
-                <span>Y Value: ${areaCheck.y}</span><br/>
-                <span>R Value: ${areaCheck.r}</span><br/>
-                <span>History Value: ${history.history}</span><br/>
                 <div>
-                    <table id="table">
-                        <caption>
-                            Result table
-                        </caption>
-                        <thead>
-                        <tr>
-                            <th>Date and time</th>
-                            <th>Delay</th>
-                            <th>X</th>
-                            <th>Y</th>
-                            <th>R</th>
-                            <th>Result</th>
-                        </tr>
-                        </thead>
-                        <tbody id="table-body">
-                        <tr>
-                            <!-- TODO: Add results here -->
-        <!--                    <td><%= getFormattedDate(point.getDatetime() + timeZoneOffset) %></td>-->
-        <!--                    <td><%= point.getDelay()%> mcs</td>-->
-        <!--                    <td><%= formatDouble(point.getX()) %></td>-->
-        <!--                    <td><%= formatDouble(point.getY()) %></td>-->
-        <!--                    <td><%= formatDouble(point.getR()) %></td>-->
-        <!--                    <td><%= point.getFormattedResult() %></td>-->
-                        </tr>
-                        </tbody>
-                    </table>
+                    <p:dataTable var="result" value="#{history.history}" id="data-table">
+                        <p:column headerText="Date and time">
+                            <h:outputText value="#{result.formattedDate}" />
+                        </p:column>
+                        <p:column headerText="Delay">
+                            <h:outputText value="#{result.formattedDelay}" />
+                        </p:column>
+                        <p:column headerText="X">
+                            <h:outputText value="#{result.x}" />
+                        </p:column>
+                        <p:column headerText="Y">
+                            <h:outputText value="#{result.y}" />
+                        </p:column>
+                        <p:column headerText="R">
+                            <h:outputText value="#{result.r}" />
+                        </p:column>
+                        <p:column headerText="Result">
+                            <h:outputText value="#{result.formattedResult}" />
+                        </p:column>
+                    </p:dataTable>
                 </div>
             </div>
         </main>
         <h:outputScript name="js.cookie.js" library="js"/>
-        <h:outputScript name="errors.js" library="js"/>
-        <h:outputScript name="utils.js" library="js"/>
         <h:outputScript name="graph.js" library="js"/>
         <h:outputScript name="script.js" library="js"/>
         <h:outputScript url="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"/>

@@ -5,7 +5,6 @@
              version="2.2">
     <persistence-unit name="lab3" transaction-type="JTA">
         <jta-data-source>java:jboss/lab3</jta-data-source>
-<!--        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
         <class>ru.ifmo.se.lab3.entities.Result</class>
         <properties>
             <property name="eclipselink.logging.level" value="FINEST" />

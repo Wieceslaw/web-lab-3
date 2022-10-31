@@ -26,6 +26,7 @@ public class HistoryBean implements Serializable {
     }
 
     public void clear() {
+        System.out.println("clear");
         repository.deleteAllWithTransaction();
     }
 }

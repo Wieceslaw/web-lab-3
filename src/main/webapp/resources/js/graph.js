@@ -1,24 +1,27 @@
-const graphImage = document.querySelector('.graph-image')
+const xInput = document.querySelector("#graph-hidden-form\\:x-hidden-value")
+const yInput = document.querySelector("#graph-hidden-form\\:y-hidden-value")
+const rInput = document.querySelector("#graph-hidden-form\\:r-hidden-value")
+const rSlider = document.querySelector("#graphForm\\:rValue")
+const sendButton = document.querySelector("#graph-hidden-form\\:hidden-button")
+const graph = document.querySelector('.graph')
 
-const rWholeNeg = document.querySelectorAll('.r-whole-neg')
-const rHalfNeg = document.querySelectorAll('.r-half-neg')
-const rHalfPos = document.querySelectorAll('.r-half-pos')
-const rWholePos = document.querySelectorAll('.r-whole-pos')
-
-const yDashLine = document.querySelector('.graph-y-dash-line')
-const xDashLine = document.querySelector('.graph-x-dash-line')
-
-function addPointToGraph(x, y, r) {
-    let xCord = (x / r / 3 + 0.5) * 300
-    let yCord = -((y / r / 3 - 0.5) * 300)
-    let circle = document.createElementNS(graphImage.namespaceURI, "circle");
-    circle.setAttributeNS(null, "cx", xCord)
-    circle.setAttributeNS(null, "cy", yCord)
-    circle.setAttributeNS(null, "r", "2")
-    graphImage.appendChild(circle)
+function redrawGraphLabels(data) {
+    if (data.status === "success") {
+        changeGraphLabels()
+    }
 }
 
-function changeGraphLabels(r) {
+function changeGraphLabels(event, ui) {
+    let rWholeNeg = document.querySelectorAll('.r-whole-neg')
+    let rHalfNeg = document.querySelectorAll('.r-half-neg')
+    let rHalfPos = document.querySelectorAll('.r-half-pos')
+    let rWholePos = document.querySelectorAll('.r-whole-pos')
+    let r
+    if (ui) {
+        r = ui.value
+    } else {
+        r = rSlider.value
+    }
     rWholeNeg.forEach(el => {
         el.textContent = -r ? -r : "-R"
     })
@@ -33,28 +36,29 @@ function changeGraphLabels(r) {
     })
 }
 
-graphImage.addEventListener('click', event => {
+graph.addEventListener('click', event => {
     let x = (event.offsetX / 250 * 300).toString()
     let y = event.offsetY / 250 * 300
-    let r = getR()
+    let r = rSlider.value
     let xCord = Math.round((x / 300 - 0.5) * r * 3)
     let yCord = ((-y / 300) + 0.5) * 3 * r
-    clearRError()
-    if (!r) {
-        showRError("Radius value is not selected")
-        return
-    }
-    if (xCord >= -4 && xCord <= 4 && yCord <= 5 && yCord >= -5) {
-        makeRequest(xCord, Math.round(yCord * 10000) / 10000, r)
+    if (xCord >= -4 && xCord <= 4 && yCord <= 5 && yCord >= -3) {
+        xInput.value = xCord
+        yInput.value = Math.round(yCord * 10000) / 10000
+        rInput.value = r
+        sendButton.click()
     }
 })
 
-graphImage.addEventListener('mousemove', event => {
+graph.addEventListener('mousemove', event => {
+    let yDashLine = document.querySelector('.graph-y-dash-line')
+    let xDashLine = document.querySelector('.graph-x-dash-line')
+
     let x = (event.offsetX / 250 * 300).toString()
     let y = event.offsetY / 250 * 300
-    let r = getR()
+    let r = rSlider.value
     let yCord = ((-y / 300) + 0.5) * 3 * r
-    if (!r || yCord <= 5 && yCord >= -5) {
+    if (!r || yCord <= 5 && yCord >= -3) {
         yDashLine.setAttribute("y1", y)
         yDashLine.setAttribute("y2", y)
     }
@@ -69,7 +73,9 @@ graphImage.addEventListener('mousemove', event => {
     }
 })
 
-graphImage.addEventListener('mouseleave', event => {
+graph.addEventListener('mouseleave', event => {
+    let yDashLine = document.querySelector('.graph-y-dash-line')
+    let xDashLine = document.querySelector('.graph-x-dash-line')
     xDashLine.setAttribute("x1", -10)
     xDashLine.setAttribute("x2", -10)
     yDashLine.setAttribute("y1", -10)

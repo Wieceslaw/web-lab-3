@@ -215,3 +215,15 @@ thead {
 .form-input input[type=button] {
     width: 32px;
 }
+
+.ui-state-default .ui-datatable {
+    background: inherit;
+}
+
+.point-hit {
+    fill: green;
+}
+
+.point-miss {
+    fill: red;
+}

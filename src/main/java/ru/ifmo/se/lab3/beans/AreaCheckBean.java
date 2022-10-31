@@ -1,6 +1,7 @@
 package ru.ifmo.se.lab3.beans;
 
 import lombok.*;
+import ru.ifmo.se.lab3.entities.Result;
 import ru.ifmo.se.lab3.model.Repository;
 import ru.ifmo.se.lab3.services.CheckService;
 
@@ -15,19 +16,22 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 public class AreaCheckBean implements Serializable {
-    // datetime delay x y r result
     @ManagedProperty(value = "#{repository}")
     private Repository repository;
     private Double x;
     private Double y;
     private Double r;
 
-    public void makeHit() {
-        // start timer
-        // get x, y, r - validated values
-        // check if hit
-        // stop timer & create point object
-        // save point object to repository
-        boolean hit = CheckService.check(x, y, r);
+    public void hit() {
+        long startTime = System.nanoTime();
+        Result result = new Result(
+                System.currentTimeMillis() / 1000L,
+                (System.nanoTime() - startTime),
+                x,
+                y,
+                r,
+                CheckService.check(x, y, r)
+        );
+        repository.createWithTransaction(result);
     }
 }
