@@ -10,11 +10,19 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width"/>
         <title>Web lab</title>
-        <h:outputStylesheet name="style.css" library="css"/>
+        <h:outputStylesheet library="css" name="style.css" />
+        <h:outputStylesheet library="css" name="form.css" />
+        <h:outputStylesheet library="css" name="graph.css" />
+        <h:outputStylesheet library="css" name="table.css" />
         <link rel="icon" href="../resources/images/star.svg" type="image/icon type"/>
     </h:head>
     <h:body>
         <header>
+            <div>
+                <h:form>
+                    <h:commandButton action="toIndex" value="Return" class="nav-button nav-button-left" />
+                </h:form>
+            </div>
             <div class="header-container">
                 <object data="../resources/images/hammer.svg" width="50px" height="50px"></object>
                 <span>Lebedev Wieceslaw</span>
@@ -24,12 +32,9 @@
             </div>
         </header>
         <main>
-            <h:form>
-                <p:commandButton action="toIndex" value="Return" />
-            </h:form>
             <div class="container">
                 <div class="panel">
-                    <div class="graph">
+                    <div class="graph-container">
                         <h:panelGroup id="graph-image">
                             <ui:include src="graph.xhtml" />
                             <h:form id="graph-hidden-form">
@@ -42,7 +47,7 @@
                             </h:form>
                         </h:panelGroup>
                     </div>
-                    <h:form action="change me" method="get" id="graphForm">
+                    <h:form id="graph-form">
                         <div>
                             <p:outputLabel for="xCord" value="X" />
                             <p:selectOneRadio value="#{areaCheck.x}" id="xCord">
@@ -58,7 +63,6 @@
                                 <f:selectItem itemValue="3" itemLabel="3" />
                                 <f:selectItem itemValue="4" itemLabel="4" />
                             </p:selectOneRadio>
-                            <p:message id="x-error" for="xCord"/>
                         </div>
                         <div>
                             <p:outputLabel for="yCord" value="Y" />
@@ -67,7 +71,6 @@
                                 <f:validator validatorId="yCordValidator"/>
                                 <f:ajax event="keyup" render="y-error" execute="@this" />
                             </p:inputText>
-                            <p:message id="y-error" for="yCord" />
                         </div>
                         <div>
                             <p:outputLabel for="rValue">R</p:outputLabel>
@@ -76,37 +79,61 @@
                                 <f:validator validatorId="rValueValidator"/>
                             </h:inputHidden>
                             <p:slider for="rValue" minValue="1" maxValue="4" step="0.25" display="rOutput" onSlide="changeGraphLabels(event, ui)" />
-                            <p:message id="r-error" for="rValue" />
                         </div>
-                        <h:commandButton type="submit" value="Hit" validateClient="true" action="#{areaCheck.hit()}">
-                            <f:ajax render="data-table x-error r-error y-error graph-image" event="click" execute="@form" />
-                        </h:commandButton>
+                        <p:message id="x-error" for="xCord"/>
+                        <p:message id="y-error" for="yCord" />
+                        <p:message id="r-error" for="rValue" />
+                        <div>
+                            <h:commandButton type="submit" value="Hit" validateClient="true" action="#{areaCheck.hit()}">
+                                <f:ajax render="data-table x-error r-error y-error graph-image" event="click" execute="@form"  onevent="redrawGraphLabels" />
+                            </h:commandButton>
+                        </div>
                     </h:form>
-                    <h:form>
-                        <h:commandButton value="Clear" action="#{history.clear()}" />
-                    </h:form>
+                    <div>
+                        <h:form>
+                            <h:commandButton value="Clear" action="#{history.clear()}" />
+                        </h:form>
+                    </div>
                 </div>
-                <div>
-                    <p:dataTable var="result" value="#{history.history}" id="data-table">
-                        <p:column headerText="Date and time">
+                <div class="table-container">
+                    <h:dataTable var="result" value="#{history.history}" id="data-table">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Time" />
+                            </f:facet>
                             <h:outputText value="#{result.formattedDate}" />
-                        </p:column>
-                        <p:column headerText="Delay">
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Delay" />
+                            </f:facet>
                             <h:outputText value="#{result.formattedDelay}" />
-                        </p:column>
-                        <p:column headerText="X">
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="X" />
+                            </f:facet>
                             <h:outputText value="#{result.x}" />
-                        </p:column>
-                        <p:column headerText="Y">
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Y" />
+                            </f:facet>
                             <h:outputText value="#{result.y}" />
-                        </p:column>
-                        <p:column headerText="R">
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="R" />
+                            </f:facet>
                             <h:outputText value="#{result.r}" />
-                        </p:column>
-                        <p:column headerText="Result">
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Result" />
+                            </f:facet>
                             <h:outputText value="#{result.formattedResult}" />
-                        </p:column>
-                    </p:dataTable>
+                        </h:column>
+                    </h:dataTable>
                 </div>
             </div>
         </main>

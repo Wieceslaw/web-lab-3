@@ -1,0 +1,40 @@
+.point-hit {
+    fill: green;
+}
+
+.point-miss {
+    fill: red;
+}
+
+.graph {
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    width: 250px;
+    height: 250px;
+    background-color: #F8C104;
+    background-size: cover;
+    cursor: crosshair;
+}
+
+.graph-container {
+    margin: 20px;
+    width: 250px;
+    height: 250px;
+}
+
+.graph * {
+    font-family: monospace;
+}
+
+.graph-axle-line {
+    stroke: black;
+}
+
+.graph-dash-line {
+    stroke: black;
+}
+
+.graph-point {
+    stroke: black;
+}

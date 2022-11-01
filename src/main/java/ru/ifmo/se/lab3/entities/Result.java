@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 @Entity
 @Table(name = "result")
 @NamedQueries({
-        @NamedQuery(name = "Result.findAll", query = "select r from Result r"),
+        @NamedQuery(name = "Result.findAll", query = "select r from Result r order by r.datetime desc"),
         @NamedQuery(name = "Result.removeAll", query = "delete from Result")
 })
 public class Result implements Serializable {
@@ -50,7 +50,7 @@ public class Result implements Serializable {
 
     public String getFormattedDate() {
         Instant dateTime = Instant.ofEpochSecond(datetime);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm:ss").withZone(ZoneOffset.UTC);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneOffset.UTC);
         return formatter.format(dateTime);
     }
 

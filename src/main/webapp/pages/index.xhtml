@@ -11,26 +11,41 @@
         <meta name="viewport" content="width=device-width"/>
         <title>Web lab 3</title>
         <h:outputStylesheet name="style.css" library="css"/>
+        <h:outputStylesheet library="css" name="style.css" />
+        <h:outputStylesheet library="css" name="form.css" />
+        <h:outputStylesheet library="css" name="graph.css" />
+        <h:outputStylesheet library="css" name="table.css" />
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" />
         <link rel="icon" href="../resources/images/star.svg" type="image/icon type"/>
     </h:head>
     <h:body>
         <header>
             <div class="header-container">
-                <object data="../resources/images/hammer.svg" width="50px" height="50px" />
+                <object data="../resources/images/hammer.svg" width="50px" height="50px"></object>
                 <span>Lebedev Wieceslaw</span>
                 <span>P32312</span>
                 <span>3231207</span>
-                <object class="rotate" data="../resources/images/star.svg" width="50px" height="50px" />
+                <object class="rotate" data="../resources/images/star.svg" width="50px" height="50px"></object>
+            </div>
+            <div>
+                <h:form>
+                    <h:commandButton action="toMain" value="To Main" class="nav-button nav-button-right" />
+                </h:form>
             </div>
         </header>
-        <div>
-            <canvas width="100" height="100" id="clock-canvas" />
+        <div style="
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        ">
+            <span>
+                Soviet Union Time
+            </span>
+            <canvas width="300" height="300" id="clock-canvas" style="margin-top: 50px" />
         </div>
         <br/>
-        <h:form>
-            <p:commandButton action="toMain" value="Go to main =>" />
-        </h:form>
         <h:outputScript name="clock.js" library="js"/>
     </h:body>
 </f:view>

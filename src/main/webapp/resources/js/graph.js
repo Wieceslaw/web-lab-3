@@ -1,9 +1,9 @@
 const xInput = document.querySelector("#graph-hidden-form\\:x-hidden-value")
 const yInput = document.querySelector("#graph-hidden-form\\:y-hidden-value")
 const rInput = document.querySelector("#graph-hidden-form\\:r-hidden-value")
-const rSlider = document.querySelector("#graphForm\\:rValue")
+const rSlider = document.querySelector("#graph-form\\:rValue")
 const sendButton = document.querySelector("#graph-hidden-form\\:hidden-button")
-const graph = document.querySelector('.graph')
+const graph = document.querySelector('.graph-container')
 
 function redrawGraphLabels(data) {
     if (data.status === "success") {

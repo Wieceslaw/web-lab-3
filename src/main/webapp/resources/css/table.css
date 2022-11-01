@@ -1,0 +1,46 @@
+.table-container {
+    margin: 20px
+}
+
+.table-container table {
+    table-layout: fixed;
+    background-color:rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-flow: column;
+    height: 700px;
+    width: 700px;
+}
+
+.table-container table, th {
+    border-width: 3px;
+    border-style: solid;
+    border-color: #F8C104;
+    border-collapse: collapse;
+}
+
+.table-container td {
+    padding: 5px;
+}
+
+.table-container tbody td {
+    text-align: center;
+}
+
+.table-container thead {
+    background: rgb(255, 0, 0);
+    padding-right: 13px;
+    flex: 0 0 auto;
+}
+
+.table-container tbody {
+    flex: 1 1 auto;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.table-container tr {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}
