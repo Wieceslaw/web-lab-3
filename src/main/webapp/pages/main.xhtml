@@ -4,7 +4,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 <f:view>
     <h:head>
         <meta charset="UTF-8"/>
@@ -47,52 +47,58 @@
                             </h:form>
                         </h:panelGroup>
                     </div>
-                    <h:form id="graph-form">
-                        <div>
-                            <p:outputLabel for="xCord" value="X" />
-                            <p:selectOneRadio value="#{areaCheck.x}" id="xCord">
-                                <f:validator validatorId="xCordValidator"/>
-                                <f:ajax event="change" render="x-error" execute="@this" />
-                                <f:selectItem itemValue="-4" itemLabel="-4" />
-                                <f:selectItem itemValue="-3" itemLabel="-3" />
-                                <f:selectItem itemValue="-2" itemLabel="-2" />
-                                <f:selectItem itemValue="-1" itemLabel="-1" />
-                                <f:selectItem itemValue="0" itemLabel="0" />
-                                <f:selectItem itemValue="1" itemLabel="1" />
-                                <f:selectItem itemValue="2" itemLabel="2" />
-                                <f:selectItem itemValue="3" itemLabel="3" />
-                                <f:selectItem itemValue="4" itemLabel="4" />
-                            </p:selectOneRadio>
-                        </div>
-                        <div>
-                            <p:outputLabel for="yCord" value="Y" />
-                            <p:inputText value="#{areaCheck.y}" id="yCord" converterMessage="Y must be a number" placeholder="(-3...5)" maxlength="6" autocomplete="off" required="true" requiredMessage="Y can not be empty" validatorMessage="Y must be between -3 and 5">
-                                <f:validateDoubleRange minimum="-3.0" maximum="5.0" for="yCord" />
-                                <f:validator validatorId="yCordValidator"/>
-                                <f:ajax event="keyup" render="y-error" execute="@this" />
-                            </p:inputText>
-                        </div>
-                        <div>
-                            <p:outputLabel for="rValue">R</p:outputLabel>
-                            <h:outputText id="rOutput" value="#{areaCheck.r}" />
-                            <h:inputHidden id="rValue" value="#{areaCheck.r}">
-                                <f:validator validatorId="rValueValidator"/>
-                            </h:inputHidden>
-                            <p:slider for="rValue" minValue="1" maxValue="4" step="0.25" display="rOutput" onSlide="changeGraphLabels(event, ui)" />
-                        </div>
-                        <p:message id="x-error" for="xCord"/>
-                        <p:message id="y-error" for="yCord" />
-                        <p:message id="r-error" for="rValue" />
-                        <div>
-                            <h:commandButton type="submit" value="Hit" validateClient="true" action="#{areaCheck.hit()}">
-                                <f:ajax render="data-table x-error r-error y-error graph-image" event="click" execute="@form"  onevent="redrawGraphLabels" />
-                            </h:commandButton>
-                        </div>
-                    </h:form>
-                    <div>
-                        <h:form>
-                            <h:commandButton value="Clear" action="#{history.clear()}" />
+                    <div class="panel-container">
+                        <h:form id="graph-form">
+                            <p:message id="x-error" for="xCord"/>
+                            <p:message id="y-error" for="yCord" />
+                            <p:message id="r-error" for="rValue" />
+                            <div class="input-container">
+                                <h:outputLabel for="xCord" value="X" />
+                                <h:selectOneRadio value="#{areaCheck.x}" id="xCord">
+                                    <f:validator validatorId="xCordValidator"/>
+                                    <f:ajax event="change" render="x-error" execute="@this" />
+                                    <f:selectItem itemValue="-4" itemLabel="-4" />
+                                    <f:selectItem itemValue="-3" itemLabel="-3" />
+                                    <f:selectItem itemValue="-2" itemLabel="-2" />
+                                    <f:selectItem itemValue="-1" itemLabel="-1" />
+                                    <f:selectItem itemValue="0" itemLabel="0" />
+                                    <f:selectItem itemValue="1" itemLabel="1" />
+                                    <f:selectItem itemValue="2" itemLabel="2" />
+                                    <f:selectItem itemValue="3" itemLabel="3" />
+                                    <f:selectItem itemValue="4" itemLabel="4" />
+                                </h:selectOneRadio>
+                            </div>
+                            <div class="input-container">
+                                <h:outputLabel for="yCord" value="Y" />
+                                <h:inputText value="#{areaCheck.y}" id="yCord" converterMessage="Y must be a number" a:placeholder="(-3...5)" maxlength="6" autocomplete="off" required="true" requiredMessage="Y can not be empty" validatorMessage="Y must be between -3 and 5" style="width: 90%;">
+                                    <f:validateDoubleRange minimum="-3.0" maximum="5.0" for="yCord" />
+                                    <f:validator validatorId="yCordValidator"/>
+                                    <f:ajax event="keyup" render="y-error" execute="@this" />
+                                </h:inputText>
+                            </div>
+                            <div class="input-container">
+                                <h:outputLabel for="rValue">R</h:outputLabel>
+                                <h:outputText id="rOutput" value="#{areaCheck.r}" />
+                                <h:inputHidden id="rValue" value="#{areaCheck.r}">
+                                    <f:validator validatorId="rValueValidator"/>
+                                </h:inputHidden>
+                                <div class="slider-container">
+                                    <p:slider for="rValue" minValue="1" maxValue="4" step="0.25" display="rOutput" onSlide="changeGraphLabels(event, ui)" />
+                                </div>
+                            </div>
+                            <div>
+                                <h:commandButton type="submit" value="Hit" validateClient="true" action="#{areaCheck.hit()}" class="button">
+                                    <f:ajax render="data-table x-error r-error y-error graph-image" event="click" execute="@form" onevent="redrawGraphLabels" />
+                                </h:commandButton>
+                            </div>
                         </h:form>
+                        <div>
+                            <h:form>
+                                <h:commandButton value="Clear" action="#{history.clear()}" class="button">
+                                    <f:ajax render="data-table graph-image" event="click" execute="@form" onevent="redrawGraphLabels" />
+                                </h:commandButton>
+                            </h:form>
+                        </div>
                     </div>
                 </div>
                 <div class="table-container">

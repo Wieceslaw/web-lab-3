@@ -79,3 +79,43 @@ html {
 .nav-button:hover {
     background-color: rgba(255, 0, 0, 50);
 }
+
+.button {
+    width: 80px;
+    height: 30px;
+}
+
+.button:hover {
+    background-color: rgba(255, 0, 0, 50);
+}
+
+.input-container td * {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 33px
+}
+
+.input-container {
+    width: 350px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slider-container {
+    width: 150px;
+}
+
+.panel-container {
+    border-style: solid;
+    border-color: #F8C104;
+    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
