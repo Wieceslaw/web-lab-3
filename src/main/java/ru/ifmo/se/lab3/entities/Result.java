@@ -1,7 +1,5 @@
 package ru.ifmo.se.lab3.entities;
 
-
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,7 +27,9 @@ public class Result implements Serializable {
     @Column(nullable = false)
     private long datetime;
     @Column(nullable = false)
-    private long delay;
+    private long startDelay;
+    @Column(nullable = false)
+    private long endDelay;
     @Column(nullable = false)
     private double x;
     @Column(nullable = false)
@@ -39,13 +39,18 @@ public class Result implements Serializable {
     @Column(nullable = false)
     private boolean result;
 
-    public Result(long datetime, long delay, double x, double y, double r, boolean result) {
+    public Result(long datetime, long startDelay, double x, double y, double r, boolean result) {
         this.datetime = datetime;
-        this.delay = delay;
+        this.startDelay = startDelay;
         this.x = x;
         this.y = y;
         this.r = r;
         this.result = result;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        endDelay = System.nanoTime();
     }
 
     public String getFormattedDate() {
@@ -55,10 +60,14 @@ public class Result implements Serializable {
     }
 
     public String getFormattedDelay() {
-        return delay + " ns";
+        return getDelay() / 1000 + " mcs";
     }
 
     public String getFormattedResult() {
         return result ? "hit" : "miss";
+    }
+
+    public long getDelay() {
+        return endDelay - startDelay;
     }
 }
